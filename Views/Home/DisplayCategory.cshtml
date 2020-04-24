@@ -1,0 +1,33 @@
+@model Category
+<div class="jumbotron">
+    <h1>@Model.CategoryName</h1>
+    <a href="/categories">Go Back</a>
+</div>
+
+
+
+<div class="row">
+    <div class="col col-sm-6">
+        <h2>Products: @Model.Products.Count</h2>
+        @foreach (var p in Model.Products)
+        {
+            <li>@p.Product.ProductName</li>
+        }
+    </div>
+    <div class="col col-sm-6">
+        <h2>Add Products</h2>
+        <form action="/category/@Model.CategoryId/product" method="post">
+            <select class="form-control" name="proID">
+                @{
+                    List<Product> All = (List<Product>) ViewBag.AllProducts;
+                    List<Product> Added = Model.Products.Select( a => a.Product).ToList();
+                    foreach(Product c in All.Except(Added))
+                    {
+                        <option value="@c.ProductId">@c.ProductName</option>
+                    }
+                }
+            </select>
+            <input type="submit" value="Add Product" class="btn btn-danger btn-sm">
+        </form>
+    </div>
+</div>
